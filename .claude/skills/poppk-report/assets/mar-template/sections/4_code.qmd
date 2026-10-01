@@ -1,0 +1,21 @@
+# CODE {#sec-code}
+
+```{r}
+#| include: false
+source("_setup.R")
+```
+
+The full text of every script in `r spec$script_dir`, in the order the version runs them (analysis, figures and tables, provenance record). Each script's hash is compared with the one recorded in the provenance record.
+
+```{r}
+#| results: asis
+for (s in script_run_order(names(spec$script_hashes))) {
+  path <- file.path(spec$script_dir, s)
+  hash <- rlang::hash_file(file.path(root, path))
+  cat(sprintf("\n\n## %s\n\n", path))
+  cat(sprintf("Hash `%s` (%s)\n\n", hash,
+              if (identical(hash, spec$script_hashes[[s]])) "matches the provenance record"
+              else "**does not match the provenance record**"))
+  cat("~~~~{.r}\n", paste(readLines(file.path(root, path), warn = FALSE), collapse = "\n"), "\n~~~~\n\n\\clearpage\n", sep = "")
+}
+```

@@ -1,0 +1,84 @@
+# Population PK outputs report (tables, figures, source files and code) for {{version_label}}.
+# Scaffolded by poppk-report's create_poppk_report(); built on the ISoP pmx-report-template
+# (https://github.com/isop-phmx/pmx-report-template, MIT). Render with render_poppk_report(),
+# which first verifies that the popPK version is unchanged since QC.
+project:
+  type: book
+  output-dir: report
+  execute-dir: project
+book:
+  title: {{book_title}}
+  output-file: {{output_file}}
+  chapters:
+    - index.qmd # overview (first chapter must be index.qmd in the root)
+    - sections/1_tables.qmd
+    - sections/2_figures.qmd
+    - sections/3_source.qmd
+    - sections/4_code.qmd
+execute:
+  echo: false
+  warning: false
+  message: false
+format:
+  pdf:
+    documentclass: scrreprt
+    pdf-engine: lualatex
+    toc: true
+    template-partials:
+      - engine/partials/title.tex
+      - engine/partials/before-body.tex
+      - engine/partials/toc.tex
+    include-in-header:
+      - engine/header.tex
+    keep-tex: false
+    toccolor: blue
+    lof: true
+    lot: true
+    highlight-style: arrow
+    toc-title: "Table of Contents"
+    link-citations: true
+    number-sections: true
+    start-numbering: 1
+    colorlinks: true
+    fig-pos: "H"
+    tbl-pos: "H"
+    classoption:
+      - toc=chapterentrywithdots
+      - 11pt
+      - headings=small
+    crossref:
+      lof-title: List of Figures
+      lot-title: List of Tables
+    hyperrefoptions:
+    - linktoc=all
+    - pdfpagemode=FullScreen
+    - bookmarks=true
+    geometry:
+      - margin=.75in
+      - left=1in
+      - right=1in
+      - top=1in
+      - bottom=3cm
+      - footskip=2cm
+      - marginparwidth=1in
+      - marginparsep=0.75cm
+    mainfont: "TeX Gyre Termes"
+    sansfont: "TeX Gyre Termes"
+
+# Cover page metadata (from project.yaml's `report:` block; edit here for this report only)
+report-type: "Population PK Analysis Outputs"
+report-heading: "POPULATION PK ANALYSIS: TABLES, FIGURES, SOURCE FILES AND CODE"
+report-number: {{report_number}}
+report-title: {{report_title}}
+drug-name: {{drug_name}}
+indication: {{indication}}
+study-number: {{study_number}}
+sponsor: {{sponsor}}
+author: {{author}}
+review: {{review}}
+approve: {{approve}}
+date: today
+date-format: "DD MMM YYYY"
+status: {{status}}
+copyright:
+  text: {{copyright}}

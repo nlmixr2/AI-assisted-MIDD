@@ -1,49 +1,20 @@
-# History files
+# R session files
 .Rhistory
-.Rapp.history
-
-# Session Data files
 .RData
-.RDataTmp
-
-# User-specific files
-.Ruserdata
-
-# Example code in package build process
-*-Ex.R
-
-# Output files from R CMD build
-/*.tar.gz
-
-# Output files from R CMD check
-/*.Rcheck/
-
-# RStudio files
 .Rproj.user/
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# OS
+.DS_Store
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+# DuckDB results databases are a local working store: large, binary, and they grow on every
+# rewrite. What is committed is the compact snapshot next to each one
+# (output/*/v*/db/snapshot/: Parquet tables + xz payload); read_*_db() rebuilds the .duckdb
+# from it automatically on a fresh clone (pk-project scripts/db_snapshot.R).
+*.duckdb
+*.duckdb.wal
 
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
+# nlmixr2 bootstrap caches (bootstrapFit() writes these into the working directory)
+nlmixr2BootstrapCache_*/
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
-
-# R Environment Variables
-.Renviron
-
-# pkgdown site
-docs/
-
-# translation temp files
-po/*~
-
-# RStudio Connect folder
-rsconnect/
+# Quarto render caches (reports in output/*/v*/MAR/)
+.quarto/

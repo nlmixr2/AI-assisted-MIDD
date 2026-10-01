@@ -1,0 +1,9 @@
+
+
+
+Set up study XYZ-222: "Phase 1 SAD of XYZ-222", concentrations in ng/mL, time in h, dose in mg. Then run NCA for data/xyz222-pk.csv (oral) and tell me whether it is ready for QC.
+
+
+Using the popPK v1 final model, simulate 320 mg q12h, 480 mg q12h and 640 mg q24h for 7 days, with 100 subjects × 10 studies. Compare steady-state Cmax, Cmin and AUCtau.
+
+Develop a popPK model for data/xyz222-pk.csv. Start with a one-compartment model with first-order absorption and proportional error model. Use NCA results as initial estimates

@@ -1,0 +1,9 @@
+% TLF shell font, passed to docorator::render_pdf(header_latex =) by render_tlf().
+% docorator's template makes the typewriter font the default (\ttdefault); switch every
+% table, header and footer to a serif font: TeX Gyre Termes (Times-like, the same font as
+% the pk-nca-report PDF) when installed, otherwise LaTeX's default serif, Latin Modern Roman.
+\ifdefined\IfFontExistsTF
+  \IfFontExistsTF{TeX Gyre Termes}{\setmainfont{TeX Gyre Termes}}{}
+\fi
+\renewcommand*\familydefault{\rmdefault}
+\normalfont

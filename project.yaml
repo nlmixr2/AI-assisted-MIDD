@@ -1,0 +1,38 @@
+# Project configuration -- the only file with study-specific settings.
+# Every generated script reads it via project_config() (pk-project skill):
+# titles for table/figure headers and spec report titles, and the units used
+# in PKNCA unit tables and axis labels. Replace every <...> value.
+
+study:
+  id: <STUDY-ID>                     # e.g. ABC-111; used in table subtitles
+  title: <Study title>               # e.g. "Phase 1 single/multiple ascending dose study of ABC-111"
+
+analyses:                            # titles used in table headers and spec report titles
+  nca:
+    title: <PK Analysis for STUDY-ID>
+  poppk:
+    title: <PopPK Analysis for STUDY-ID>
+  poppk-sim:
+    title: <PopPK Simulation for STUDY-ID>
+
+units:                               # units of the source data
+  conc: <mg/L>                       # concentration
+  time: <h>                          # time
+  dose: <mg>                         # dose amount
+
+sampling:                            # protocol schedule for nominal-time tables and figures
+  nominal_times: []                  # e.g. [0, 0.25, 0.5, 1, 2, 4, 8, 12, 24] (units$time)
+  nominal_labels: []                 # optional, e.g. [Predose, "0.25", ...]
+  lloq: null                         # optional, lower limit of quantification (units$conc)
+
+report:                              # cover page of rendered reports (pk-nca-report); optional
+  report_number: <NCA-001>
+  poppk_report_number: <POPPK-001>   # optional: popPK report (poppk-report); defaults to report_number
+  drug_name: <Drug A>
+  indication: <Disease X>
+  sponsor: <Sponsor name>
+  company: <Company name>            # used in the confidentiality statement
+  authors: <Initials of authors>
+  reviewers: <Initials of reviewers>
+  approvers: <Initials of approvers>
+  status: DRAFT

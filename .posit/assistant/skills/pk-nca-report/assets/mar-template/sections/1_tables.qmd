@@ -1,0 +1,19 @@
+# TABLES {#sec-tables}
+
+```{r}
+#| include: false
+source("_setup.R")
+```
+
+Each table below is the `gt` object saved with the version's table PDF (`output/nca/v`r nca_version`/tables/`), checked against the hash in the provenance record, and printed unchanged: same rows, statistics, rounding, labels and footnotes as the QC'd PDF.
+
+```{r}
+#| results: asis
+for (e in spec$outputs$tables) {
+  name <- output_name(e)
+  cat(sprintf("\n\n## %s\n\n", md_escape(e$description %||% name)))
+  cat(sprintf("Source: `%s` (script `%s/%s.R`)\n\n", e$path, spec$script_dir, name))
+  cat(as.character(print_table_display(nca_table_display(name, spec, root), label = paste0("tbl:", name))))
+  cat("\n\n\\clearpage\n\n")
+}
+```

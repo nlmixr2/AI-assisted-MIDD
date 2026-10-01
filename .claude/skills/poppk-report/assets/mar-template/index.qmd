@@ -1,0 +1,31 @@
+# OVERVIEW {#sec-overview}
+
+```{r}
+#| include: false
+source("_setup.R")
+```
+
+This document collects the outputs of population PK analysis version v`r poppk_version` of study `r cfg$study$id` (`r analysis_title("poppk", cfg)`) in one file, as produced and checked by the analysis. It contains no text written after the analysis and no refitting: every table and figure is the object saved by the version's own script, verified against the hash recorded in the version's provenance record.
+
+- **Tables** (@sec-tables): `r length(spec$outputs$tables)` table(s), exactly as rendered by the version's `tbl-*.R` scripts.
+- **Figures** (@sec-figures): `r length(spec$outputs$figures)` figure(s), every page, exactly as rendered by the version's `fig-*.R` scripts.
+- **Source files and provenance** (@sec-source): the model trail, final model and its acceptance checks as recorded in the provenance record; the source data, model dataset, results database, fit archives, \gls{QC} result, run logs and a hash manifest of every file.
+- **Code** (@sec-code): the full text of the `r length(spec$scripts)` script(s) that produced the outputs, with their hashes.
+
+```{r}
+#| label: tbl-overview
+#| tbl-cap: "Version at a glance"
+report_table(tibble::tribble(
+  ~Item, ~Value,
+  "Analysis", sprintf("%s (popPK v%d)", analysis_title("poppk", cfg), poppk_version),
+  "Source data", spec$data$source_file$path,
+  "Participants / observation records / dose records",
+  sprintf("%d / %d / %d", data_sum$n_subjects, data_sum$n_obs, data_sum$n_doses),
+  "Model trail", sprintf("%d run(s)", length(spec$models)),
+  "Final model", sprintf("%s (%s, OFV %.2f)", spec$final_model$run_id, toupper(spec$final_model$est),
+                         spec$final_model$objf),
+  "QC suite (latest run)", qc_text,
+  "QC status (provenance record)", spec$qc$status %||% "--",
+  "Provenance record", sprintf("spec/poppk/v%d.yaml (generated %s)", poppk_version, spec$generated_at)
+), align = c("l", "l"))
+```

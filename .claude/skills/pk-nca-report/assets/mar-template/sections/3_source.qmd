@@ -1,0 +1,85 @@
+# SOURCE FILES AND PROVENANCE {#sec-source}
+
+```{r}
+#| include: false
+source("_setup.R")
+```
+
+## Verification
+
+This document was generated from NCA version v`r nca_version` without re-running the analysis. Before rendering, the version's provenance record was verified: its sidecar hash matched and every output file matched its recorded hash. Latest automated \gls{QC} suite run: `r qc_text`. \gls{QC} status recorded in the provenance record: **`r spec$qc$status`**`r if (!is.null(spec$qc$reviewer)) sprintf(" (reviewer: %s, %s)", spec$qc$reviewer, spec$qc$reviewed_date %||% "") else ""`.
+
+```{r}
+#| label: tbl-provenance
+#| tbl-cap: "Provenance of the reported results"
+report_table(tibble::tribble(
+  ~Item, ~Value,
+  "Analysis version", sprintf("NCA v%d (%s)", nca_version, spec$script_dir),
+  "Source data", spec$data$source_file$path,
+  "Source data hash", spec$data$source_file$hash,
+  "Results database", spec$data$nca_db$path,
+  "Database payload hash", spec$data$nca_db$payload_hash,
+  "Scripts combined hash", spec$scripts_combined_hash,
+  "Analysis run", spec$data$nca_db$generated_at %||% "--",
+  "Provenance record", sprintf("spec/nca/v%d.yaml (generated %s)", nca_version, spec$generated_at),
+  "R version", spec$r_version %||% "--"
+), align = c("l", "l"))
+```
+
+## Source Data
+
+```{r}
+#| label: tbl-dataset
+#| tbl-cap: "Analysis dataset as stored in the results database"
+report_table(tibble::tribble(
+  ~Item, ~Value,
+  "File", spec$data$source_file$path,
+  "Participants", as.character(data_sum$n_subjects),
+  "Concentration records (of which zero)", sprintf("%d (%d)", data_sum$n_obs, data_sum$n_obs_zero),
+  "Dose records", as.character(data_sum$n_doses),
+  "Doses", sprintf("%s %s", paste(signif(data_sum$doses, 4), collapse = ", "), u$dose),
+  "Route", paste(data_sum$routes, collapse = ", "),
+  "Time range", sprintf("%s to %s %s", data_sum$time_range[1], data_sum$time_range[2], u$time),
+  "Nominal time source", {nt <- spec$data$nominal_time; if (is.list(nt)) nt$source else nt} %||% "--",
+  "Data validation report", validation_report()
+), align = c("l", "l"))
+```
+
+## Packages
+
+```{r}
+#| label: tbl-packages
+#| tbl-cap: "Package versions recorded in the provenance record"
+pk <- spec$packages %||% list()
+report_table(tibble::tibble(Package = names(pk), Version = unlist(pk, use.names = FALSE)), align = c("l", "l"))
+```
+
+## Run Logs
+
+```{r}
+#| label: tbl-logs
+#| tbl-cap: "Latest run log of each script"
+report_table(log_table(), align = c("l", "l", "l"))
+```
+
+## Electronic File Manifest
+
+```{r}
+#| label: tbl-manifest
+#| tbl-cap: "Analysis scripts and outputs with their hashes"
+manifest <- dplyr::bind_rows(
+  tibble::tibble(Type = "Script", File = file.path(spec$script_dir, names(spec$script_hashes)),
+                 Hash = unlist(spec$script_hashes)),
+  tibble::tibble(Type = "Table", File = vapply(spec$outputs$tables, `[[`, "", "path"),
+                 Hash = vapply(spec$outputs$tables, `[[`, "", "hash")),
+  tibble::tibble(Type = "Table object",
+                 File = unlist(lapply(spec$outputs$tables, function(e) e$display_rds$path)),
+                 Hash = unlist(lapply(spec$outputs$tables, function(e) e$display_rds$hash))),
+  tibble::tibble(Type = "Figure", File = vapply(spec$outputs$figures, `[[`, "", "path"),
+                 Hash = vapply(spec$outputs$figures, `[[`, "", "hash")),
+  tibble::tibble(Type = "Figure object",
+                 File = unlist(lapply(spec$outputs$figures, function(e) e$display_rds$path)),
+                 Hash = unlist(lapply(spec$outputs$figures, function(e) e$display_rds$hash)))
+)
+report_table(manifest, align = c("l", "l", "l"))
+```

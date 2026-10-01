@@ -1,0 +1,32 @@
+# Configuration template for pk-nca-tables' tfrmt templates: shared row/column
+# labels and footnote text, so multiple table scripts stay consistent without
+# copy-pasting strings. Copy to your project (e.g. config/nca-table-labels.yaml)
+# and edit -- do not point tbl-*.R at this file inside the skill directory
+# directly.
+#
+# Load with: table_cfg <- yaml::read_yaml("config/nca-table-labels.yaml")
+# Then reference e.g. table_cfg$pk_parameter_labels$cmax in place of a
+# hard-coded "Cmax (mg/L)" string.
+
+pk_parameter_labels:
+  cmax: "Cmax (mg/L)"
+  tmax: "Tmax (h)"
+  clast.obs: "Clast (mg/L)"
+  half.life: "Half-life (h)"
+  aucinf.obs: "AUCinf (mg\xB7h/L)"
+
+summary_row_labels:
+  n: "N"
+  mean: "Mean"
+  median: "Median"
+  min_max: "Min, Max"
+  blq_n: "BLQ N"
+  pct_blq: "%BLQ"
+
+footnotes:
+  n: "N = number of subjects"
+  min_max: "Min, Max = minimum and maximum observed value"
+  blq_n: "BLQ = below the limit of quantification (concentration = 0)"
+  pct_blq: "%BLQ = percentage of subjects BLQ at the nominal sample time"
+
+stub_column_header: "Participant ID"

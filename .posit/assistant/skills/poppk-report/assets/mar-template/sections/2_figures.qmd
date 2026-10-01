@@ -1,0 +1,24 @@
+# FIGURES {#sec-figures}
+
+```{r}
+#| include: false
+source("_setup.R")
+```
+
+Each figure below is the image saved with the version's figure PDF (`output/poppk/v`r poppk_version`/figures/`), checked against the hash in the provenance record, with every page shown. Captions are the descriptions recorded in the provenance record.
+
+```{r}
+#| results: asis
+for (e in spec$outputs$figures) {
+  name <- output_name(e)
+  cap <- md_escape(e$description %||% name)
+  cat(sprintf("\n\n## %s\n\n", cap))
+  cat(sprintf("Source: `%s` (script `%s/%s.R`)\n\n", e$path, spec$script_dir, name))
+  display <- fig_display(name)
+  n_pages <- if (inherits(display, "PNG")) 1L else length(display)
+  for (i in seq_len(n_pages)) {
+    page_cap <- if (n_pages > 1) sprintf("%s (page %d of %d)", cap, i, n_pages) else cap
+    cat(sprintf("![%s](%s){width=100%%}\n\n\\clearpage\n\n", page_cap, qc_figure(name, i, display = display)))
+  }
+}
+```

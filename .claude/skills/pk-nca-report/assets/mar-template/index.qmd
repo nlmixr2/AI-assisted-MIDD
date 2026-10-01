@@ -1,0 +1,27 @@
+# OVERVIEW {#sec-overview}
+
+```{r}
+#| include: false
+source("_setup.R")
+```
+
+This document collects the outputs of \gls{NCA} version v`r nca_version` of study `r cfg$study$id` (`r analysis_title("nca", cfg)`) in one file, as produced and checked by the analysis. It contains no text written after the analysis and no recalculation: every table and figure is the object saved by the version's own script, verified against the hash recorded in the version's provenance record.
+
+- **Tables** (@sec-tables): `r length(spec$outputs$tables)` table(s), exactly as rendered by the version's `tbl-*.R` scripts.
+- **Figures** (@sec-figures): `r length(spec$outputs$figures)` figure(s), every page, exactly as rendered by the version's `fig-*.R` scripts.
+- **Source files and provenance** (@sec-source): the source data, results database, provenance record, \gls{QC} result, run logs and a hash manifest of every file.
+- **Code** (@sec-code): the full text of the `r length(spec$scripts)` script(s) that produced the outputs, with their hashes.
+
+```{r}
+#| label: tbl-overview
+#| tbl-cap: "Version at a glance"
+report_table(tibble::tribble(
+  ~Item, ~Value,
+  "Analysis", sprintf("%s (NCA v%d)", analysis_title("nca", cfg), nca_version),
+  "Source data", spec$data$source_file$path,
+  "Participants / concentration records", sprintf("%d / %d", data_sum$n_subjects, data_sum$n_obs),
+  "QC suite (latest run)", qc_text,
+  "QC status (provenance record)", spec$qc$status %||% "--",
+  "Provenance record", sprintf("spec/nca/v%d.yaml (generated %s)", nca_version, spec$generated_at)
+), align = c("l", "l"))
+```

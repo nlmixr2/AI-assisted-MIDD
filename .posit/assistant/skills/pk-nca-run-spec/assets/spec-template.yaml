@@ -1,0 +1,63 @@
+# Blank/annotated spec-file scaffold for spec/nca/v{project_number}.yaml.
+# Copy this as a starting point when hand-assembling a spec (e.g. drafting
+# semantic fields before the auto fields are merged in) -- fields marked
+# (auto) below are normally filled in by scripts/build_spec.R's
+# collect_run_metadata()/list_outputs()/collect_data_provenance(), not
+# hand-typed. See references/schema.md for the full field-by-field
+# description and a fully worked, filled-in example.
+
+project_number: null            # (auto) integer -- the v{project_number} directory
+script_dir: null                 # (auto) e.g. script/nca/v1
+scripts: []                      # (auto) basenames of every .R file in that directory
+script_hashes: {}                # (auto) basename -> rlang::hash_file()
+scripts_combined_hash: null       # (auto)
+generated_at: null                # (auto) ISO-8601 timestamp
+r_version: null                   # (auto)
+packages: {}                      # (auto) package -> installed version
+description: ""                   # (fill in) one or two sentences
+
+data:
+  dataset: ""                     # (fill in) e.g. "Theophylline PK data (data/pk-data.csv)"
+  source_file:
+    path: null                    # (auto, via collect_data_provenance())
+    hash: null                    # (auto)
+  nca_db:                         # (auto, via pk-nca-database's read_nca_db()/write_nca_db())
+    path: null                    # output/nca/v{project_number}/db/nca.duckdb
+    project_number: null
+    generated_at: null
+    payload_hash: null
+  concentration_data: ""          # (fill in) e.g. "cObsData: participant, time, cObs"
+  dose_data: ""                   # (fill in)
+  route: ""                       # (fill in) e.g. "extravascular"
+  units:
+    conc: ""
+    time: ""
+    dose: ""
+    amount: ""
+  hash:
+    combined: null                # (auto, via hash_data())
+    components: {}
+
+parameters:
+  interval:
+    start: 0
+    end: "Inf"                    # string "Inf", not numeric -- see schema.md
+  requested: []                   # (fill in) e.g. [cmax, tmax, half.life, aucinf.obs, clast.obs]
+
+diagnostics:
+  flagged_subjects: []            # (fill in) list of {id, reason}
+  notes: null
+
+outputs:
+  tables: []                      # (auto, via list_outputs() + annotate_outputs())
+  figures: []                     # (auto)
+
+qc:
+  status: pending                 # pending | in_review | approved | rejected
+  reviewer: null
+  reviewed_date: null
+  notes: null
+
+report:
+  title: ""                       # (fill in) e.g. "NCA Report - Theophylline - v1"
+  template: null
